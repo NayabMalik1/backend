@@ -1,0 +1,15 @@
+@"
+__pycache__/
+*.pyc
+.venv/
+venv/
+data/
+uploads/
+outputs/
+temp/
+trained_models/*.pth
+support_embeddings/*.pkl
+*.log
+.DS_Store
+Thumbs.db
+"@ | Out-File -FilePath .gitignore -Encoding utf8
