@@ -2,6 +2,7 @@ import os
 import zipfile
 from typing import List
 
+
 def extract_dex_files_from_apk(apk_path: str, extract_dir: str) -> List[str]:
     """
     Extract all .dex files from an APK into extract_dir.
@@ -30,6 +31,7 @@ def extract_dex_files_from_apk(apk_path: str, extract_dir: str) -> List[str]:
         raise Exception(f"No .dex file found in APK: {apk_path}")
 
     return extracted_dex_paths
+
 
 def extract_primary_dex_from_apk(apk_path: str, extract_dir: str) -> str:
     """

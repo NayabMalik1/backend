@@ -1,13 +1,13 @@
 {
-  "overall_accuracy": 44.0,
-  "seen_accuracy": 53.33,
-  "unseen_accuracy": 30.0,
+  "overall_accuracy": 88.0,
+  "seen_accuracy": 93.33,
+  "unseen_accuracy": 80.0,
   "family_accuracy": {
-    "adware": 0.0,
-    "banking": 60.0,
+    "adware": 80.0,
+    "banking": 80.0,
     "benign": 100.0,
-    "riskware": 60.0,
-    "smsware": 0.0
+    "riskware": 80.0,
+    "smsware": 100.0
   },
   "final_loss": null
 }

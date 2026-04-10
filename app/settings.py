@@ -13,7 +13,7 @@ TEST_IMAGES_DIR = os.path.join(DATA_DIR, "test_images")
 
 UPLOADS_DIR = os.path.join(DATA_DIR, "uploads")
 OUTPUTS_DIR = os.path.join(DATA_DIR, "outputs")
-TRAINED_MODELS_DIR = os.path.join(BACKEND_DIR, "trained_models")
+
 TRAINED_MODELS_DIR = os.path.join(BACKEND_DIR, "trained_models")
 SUPPORT_EMBEDDINGS_DIR = os.path.join(BACKEND_DIR, "support_embeddings")
 

@@ -5,6 +5,7 @@ from typing import Tuple
 import numpy as np
 from PIL import Image
 
+
 def calculate_image_width(file_size: int) -> int:
     """
     Common practical width selection based on file size.
@@ -26,6 +27,7 @@ def calculate_image_width(file_size: int) -> int:
     if file_size < 1_000_000:
         return 768
     return 1024
+
 
 def dex_to_grayscale_array(dex_path: str) -> np.ndarray:
     """
@@ -56,6 +58,7 @@ def dex_to_grayscale_array(dex_path: str) -> np.ndarray:
 
     image_array = padded_array.reshape((height, width))
     return image_array
+
 
 def dex_to_grayscale_image(dex_path: str, output_image_path: str) -> str:
     """

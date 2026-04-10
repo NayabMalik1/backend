@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from torchvision import models
 
+
 class ResNet34Embedding(nn.Module):
     def __init__(
         self,
@@ -48,6 +49,7 @@ class ResNet34Embedding(nn.Module):
         x = self.embedding_head(x)
         return x
 
+
 class SiameseResNet34(nn.Module):
     def __init__(
         self,
@@ -69,4 +71,3 @@ class SiameseResNet34(nn.Module):
         e1 = self.forward_once(x1)
         e2 = self.forward_once(x2)
         return e1, e2
-

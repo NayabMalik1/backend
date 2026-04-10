@@ -6,6 +6,7 @@ from .dex_utils import extract_primary_dex_from_apk
 from .apk_to_grayscale import dex_to_grayscale_image
 from .resize_utils import resize_image
 
+
 def apk_to_image_pipeline(
     apk_path: str,
     temp_dir: str,

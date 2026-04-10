@@ -9,10 +9,12 @@ from torchvision import transforms
 from app.models.resnet34_siamese import SiameseResNet34
 from app.settings import IMAGE_SIZE, EMBED_DIM, DEVICE, MODEL_PATH
 
+
 _transform = transforms.Compose([
     transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
     transforms.ToTensor(),
 ])
+
 
 def load_model(model_path: Optional[str] = None) -> SiameseResNet34:
     model_path = model_path or MODEL_PATH
@@ -28,6 +30,7 @@ def load_model(model_path: Optional[str] = None) -> SiameseResNet34:
     model.eval()
     return model
 
+
 def image_to_tensor(image_path: str) -> torch.Tensor:
     if not os.path.isfile(image_path):
         raise FileNotFoundError(f"Image not found: {image_path}")
@@ -35,6 +38,7 @@ def image_to_tensor(image_path: str) -> torch.Tensor:
     img = Image.open(image_path).convert("L")
     tensor = _transform(img).unsqueeze(0)  # [1,1,H,W]
     return tensor
+
 
 @torch.no_grad()
 def make_embedding(image_path: str, model: SiameseResNet34) -> torch.Tensor:

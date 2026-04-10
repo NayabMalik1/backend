@@ -3,14 +3,17 @@ import uuid
 import shutil
 import numpy as np
 
+from app.static_analysis.apk_analyzer import extract_permissions, extract_api_calls
 from app.preprocessing.apk_pipeline import apk_to_image_pipeline
 from app.inference.make_embedding import load_model, make_embedding
 from app.inference.compare_support import compare_with_support
 from app.inference.decide_result import decide_prediction
 from app.settings import UPLOADS_DIR, OUTPUTS_DIR
 
+
 def ensure_dir(path: str):
     os.makedirs(path, exist_ok=True)
+
 
 def scan_user_apk(apk_file_path: str):
     ensure_dir(UPLOADS_DIR)
@@ -43,6 +46,10 @@ def scan_user_apk(apk_file_path: str):
         similarity_scores = compare_with_support(query_embedding)
         result = decide_prediction(similarity_scores)
 
+        # Extract static analysis data (permissions and API calls) – inside the function
+        permissions = extract_permissions(apk_file_path)
+        api_calls = extract_api_calls(apk_file_path)
+
         return {
             "success": True,
             "file_name": os.path.basename(apk_file_path),
@@ -54,6 +61,8 @@ def scan_user_apk(apk_file_path: str):
             "grayscale_image_url": f"/outputs/{os.path.basename(output_image_path)}",
             "family_matches": result["family_matches"],
             "processing_steps": processing_steps,
+            "permissions": permissions,
+            "api_calls": api_calls
         }
 
     finally:

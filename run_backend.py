@@ -1,5 +1,7 @@
 import uvicorn
 import os
+import sys
+print(sys.executable)
 
 def main():
     """

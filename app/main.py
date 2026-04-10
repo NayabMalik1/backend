@@ -9,21 +9,34 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.schemas import ScanResponse
 from app.settings import UPLOADS_DIR, OUTPUTS_DIR, TRAINED_MODELS_DIR, DATA_DIR, SUPPORT_EMBEDDINGS_PATH
 from app.inference.scan_user_apk import scan_user_apk
+from app.database import engine, Base
+from app.routers import auth, history, local_report
 
 app = FastAPI(title="Android Malware FSL API")
 
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Create directories
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 os.makedirs(OUTPUTS_DIR, exist_ok=True)
 
+# Static files
 app.mount("/outputs", StaticFiles(directory=OUTPUTS_DIR), name="outputs")
+
+# Create database tables
+Base.metadata.create_all(bind=engine)
+
+# Include routers (only once each)
+app.include_router(auth.router)
+app.include_router(history.router)
+app.include_router(local_report.router)
 
 @app.get("/")
 def root():
@@ -48,12 +61,11 @@ async def scan(apk: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 # ========== DASHBOARD ENDPOINTS ==========
-
 @app.get("/api/train-history")
 async def get_train_history():
     history_path = os.path.join(TRAINED_MODELS_DIR, "train_history.json")
     if not os.path.isfile(history_path):
-        return []   # empty list if no history yet
+        return []
     with open(history_path, "r") as f:
         return json.load(f)
 
@@ -61,7 +73,6 @@ async def get_train_history():
 async def get_evaluation_metrics():
     metrics_path = os.path.join(TRAINED_MODELS_DIR, "evaluation_metrics.json")
     if not os.path.isfile(metrics_path):
-        # Realistic default: all zeros (no fake 92%)
         return {
             "overall_accuracy": 0.0,
             "seen_accuracy": 0.0,
@@ -75,7 +86,6 @@ async def get_evaluation_metrics():
 @app.get("/api/dashboard-stats")
 async def dashboard_stats():
     try:
-        # Count raw APKs
         raw_dir = os.path.join(DATA_DIR, "raw_apks")
         families = ["benign", "banking", "smsware", "adware", "riskware"]
         raw_apks = {}
@@ -86,7 +96,6 @@ async def dashboard_stats():
             else:
                 raw_apks[family] = 0
 
-        # Count split images
         splits = ["train_images", "test_images", "support_set"]
         image_splits = {}
         split_totals = {}
@@ -104,7 +113,6 @@ async def dashboard_stats():
                 total += count
             split_totals[split] = total
 
-        # Count embeddings
         embedding_count = 0
         if os.path.isfile(SUPPORT_EMBEDDINGS_PATH):
             try:
@@ -114,7 +122,6 @@ async def dashboard_stats():
             except:
                 pass
 
-        # Load training history and evaluation
         training_history = await get_train_history()
         evaluation = await get_evaluation_metrics()
 

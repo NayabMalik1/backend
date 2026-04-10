@@ -1,6 +1,7 @@
 from typing import Dict
 import numpy as np
 
+
 def softmax(x: np.ndarray, temperature: float = 0.30) -> np.ndarray:
     x = np.asarray(x, dtype=np.float32)
 
@@ -18,6 +19,7 @@ def softmax(x: np.ndarray, temperature: float = 0.30) -> np.ndarray:
         return np.ones_like(x) / len(x)
 
     return exp_x / denom
+
 
 def decide_prediction(similarity_scores: Dict[str, float]) -> Dict[str, float]:
     if not similarity_scores:
@@ -73,6 +75,7 @@ def decide_prediction(similarity_scores: Dict[str, float]) -> Dict[str, float]:
         "danger_score": round(danger_score, 2),
         "family_matches": family_matches,
     }
+
 
 if __name__ == "__main__":
     scores = {

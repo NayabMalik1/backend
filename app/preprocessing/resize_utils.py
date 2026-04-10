@@ -3,6 +3,7 @@ from typing import Tuple
 
 from PIL import Image
 
+
 def resize_image(
     input_path: str,
     output_path: str,

@@ -8,6 +8,7 @@ from app.models.resnet34_siamese import SiameseResNet34
 from app.training.pair_dataset import PairDataset
 from app.training.loss_functions import ContrastiveLoss
 
+
 TRAIN_DIR = "data/train_images"
 MODEL_DIR = "trained_models"
 MODEL_PATH = os.path.join(MODEL_DIR, "resnet34_best.pth")
@@ -22,8 +23,10 @@ LR = 0.00005
 TRAIN_BATCH_SIZE = 2
 DEVICE = "cpu"
 
+
 def ensure_dir(path: str):
     os.makedirs(path, exist_ok=True)
+
 
 def train():
     ensure_dir(MODEL_DIR)
@@ -104,6 +107,6 @@ def train():
     print("\nTraining complete.")
     print("Best model path:", MODEL_PATH)
 
+
 if __name__ == "__main__":
     train()
-

@@ -6,3 +6,15 @@ pillow
 torch
 torchvision
 pydantic
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+email-validator
+aiosmtplib
+python-dotenv
+werkzeug
+python-jose[cryptography]
+python-dotenv
+sqlalchemy
+aiosqlite
+email-validator

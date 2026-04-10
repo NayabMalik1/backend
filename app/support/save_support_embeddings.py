@@ -16,8 +16,10 @@ from app.settings import (
 # Seen families = jinke paas training images bhi hain
 SEEN_FAMILIES = {"benign", "banking", "smsware"}
 
+
 def ensure_dir(path: str):
     os.makedirs(path, exist_ok=True)
+
 
 def get_png_images(folder: str):
     if not os.path.isdir(folder):
@@ -26,6 +28,7 @@ def get_png_images(folder: str):
         f for f in os.listdir(folder)
         if f.lower().endswith(".png")
     )
+
 
 def add_family_embeddings_from_folder(
     family: str,
@@ -76,6 +79,7 @@ def add_family_embeddings_from_folder(
             print(f"[FAILED] {source_tag}/{image_name}: {e}")
 
     return success_count, fail_count
+
 
 def save_support_embeddings():
     ensure_dir(SUPPORT_EMBEDDINGS_DIR)
@@ -128,6 +132,7 @@ def save_support_embeddings():
     print("\nFinal family counts:")
     for family in ALL_FAMILIES:
         print(f"- {family}: {len(support_db[family])} embeddings")
+
 
 if __name__ == "__main__":
     save_support_embeddings()

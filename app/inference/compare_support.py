@@ -6,6 +6,7 @@ import numpy as np
 
 from app.settings import SUPPORT_EMBEDDINGS_PATH
 
+
 def load_support_embeddings() -> Dict[str, List[dict]]:
     if not os.path.isfile(SUPPORT_EMBEDDINGS_PATH):
         raise FileNotFoundError(
@@ -15,6 +16,7 @@ def load_support_embeddings() -> Dict[str, List[dict]]:
     with open(SUPPORT_EMBEDDINGS_PATH, "rb") as f:
         return pickle.load(f)
 
+
 def l2_normalize(x: np.ndarray) -> np.ndarray:
     x = np.asarray(x, dtype=np.float32).flatten()
     norm = np.linalg.norm(x)
@@ -22,15 +24,18 @@ def l2_normalize(x: np.ndarray) -> np.ndarray:
         return x
     return x / norm
 
+
 def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
     a = l2_normalize(a)
     b = l2_normalize(b)
     return float(np.dot(a, b))
 
+
 def build_prototype(embeddings: List[np.ndarray]) -> np.ndarray:
     arr = np.stack([l2_normalize(e) for e in embeddings], axis=0)
     proto = np.mean(arr, axis=0)
     return l2_normalize(proto)
+
 
 def get_weighted_family_items(items: List[dict]) -> Tuple[List[np.ndarray], List[float]]:
     """
@@ -58,6 +63,7 @@ def get_weighted_family_items(items: List[dict]) -> Tuple[List[np.ndarray], List
 
     return embeddings, weights
 
+
 def weighted_topk_score(
     query_embedding: np.ndarray,
     embeddings: List[np.ndarray],
@@ -76,6 +82,7 @@ def weighted_topk_score(
     k = min(top_k, len(sims))
     return float(np.mean(sims[:k]))
 
+
 def weighted_best_score(
     query_embedding: np.ndarray,
     embeddings: List[np.ndarray],
@@ -90,6 +97,7 @@ def weighted_best_score(
         if sim > best:
             best = sim
     return float(best)
+
 
 def compare_with_support(query_embedding: np.ndarray) -> Dict[str, float]:
     db = load_support_embeddings()
