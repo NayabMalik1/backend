@@ -11,6 +11,11 @@ from app.settings import UPLOADS_DIR, OUTPUTS_DIR, TRAINED_MODELS_DIR, DATA_DIR,
 from app.inference.scan_user_apk import scan_user_apk
 from app.database import engine, Base
 from app.routers import auth, history, local_report
+from app.routers import sandbox
+from app.routers import sandbox
+
+# ... after other routers
+
 
 app = FastAPI(title="Android Malware FSL API")
 
@@ -37,6 +42,7 @@ Base.metadata.create_all(bind=engine)
 app.include_router(auth.router)
 app.include_router(history.router)
 app.include_router(local_report.router)
+app.include_router(sandbox.router)
 
 @app.get("/")
 def root():
